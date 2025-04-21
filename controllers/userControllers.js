@@ -33,7 +33,7 @@ const register = asyncHandler(async (req, res) => {
 
         const hashPassword = await bcrypt.hash(password, 10);
   
-         let profileImageUrl = [];
+        let profileImageUrl = "";
         
          if (req.file) {
             const fileName = `profile_${Date.now()}_${req.file.originalname}`;
@@ -45,6 +45,19 @@ const register = asyncHandler(async (req, res) => {
             // Set profile image URL for retrieval
             profileImageUrl = `${serverBaseUrl}/uploads/${fileName}`;
         }
+
+        let parsedGoals = [];
+
+        if (typeof goals === 'string') {
+            try {
+                parsedGoals = JSON.parse(goals); // parse from string to array of objects
+            } catch (err) {
+                return res.status(400).json({ message: "Invalid goals format. Should be a JSON array of objects." });
+            }
+        } else {
+            parsedGoals = goals;
+        }
+
         const user = new User({
             fullName,
             username,
@@ -57,7 +70,7 @@ const register = asyncHandler(async (req, res) => {
             gender,
             weight,
             height,
-            goals,
+            goals: parsedGoals,
             dietaryPreferences
           
         });
@@ -106,16 +119,16 @@ const updateUser = asyncHandler(async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        let profileImageUrl = user.profileImage; 
+        let profileImageUrl = req.body.profileImage; // fallback to provided URL (optional)
 
         if (req.file) {
             const fileName = `profile_${Date.now()}_${req.file.originalname}`;
             const filePath = path.join(uploadDir, fileName);
-
+        
             // Save new file to local storage
             fs.writeFileSync(filePath, req.file.buffer);
-
-            // Update profile image URL
+        
+            // Construct public URL
             profileImageUrl = `${serverBaseUrl}/uploads/${fileName}`;
         }
 
