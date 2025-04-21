@@ -11,7 +11,7 @@ const UserSchema = new mongoose.Schema({
     gender:{type:String, required:true},
     weight:{type:Number, required:true},
     height:{type:Number, required:true},
-    profileImage:[{String}],
+    profileImage:{type:String},
     goals:[{
         type:{type:String, required:true},
         targetWeight:{type:Number, required:true},
