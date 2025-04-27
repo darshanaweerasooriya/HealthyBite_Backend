@@ -6,6 +6,8 @@ const userRoutes = require('./routes/userRoutes');
 const mealPlanRoutes = require('./routes/mealPlanRoutes');
 const recipeRoutes = require('./routes/recipeRoutes');
 const nutritionTrackingRoutes = require('./routes/nutrtiontrackingRoutes');
+const mealRoutes = require('./routes/mealRoutes');
+const groceryRoutes = require('./routes/groceryRoutes');
 const app = express();
 
 connectDB();
@@ -17,6 +19,8 @@ app.use('/api/users',cors(), userRoutes);
 app.use('/api/mealplan',cors(), mealPlanRoutes);
 app.use('/api/recipes',cors(), recipeRoutes);
 app.use('/api/nutritiontracking',cors(), nutritionTrackingRoutes);
+app.use('/api/meal',cors(), mealRoutes);
+app.use('/api/grocery',cors(), groceryRoutes);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, '0.0.0.0',() => console.log(`Server is running on port ${PORT}...`));
