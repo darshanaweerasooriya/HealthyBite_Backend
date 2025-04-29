@@ -9,6 +9,8 @@ const nutritionTrackingRoutes = require('./routes/nutrtiontrackingRoutes');
 const mealRoutes = require('./routes/mealRoutes');
 const groceryRoutes = require('./routes/groceryRoutes');
 const feedbackRoutes = require('./routes/feedbackRoutes');
+const progressLogRoutes = require('./routes/progressLogRoutes');
+const nutritionContentRoutes = require('./routes/nutritioncontentRoutes');
 const app = express();
 
 connectDB();
@@ -23,6 +25,8 @@ app.use('/api/nutritiontracking',cors(), nutritionTrackingRoutes);
 app.use('/api/meal',cors(), mealRoutes);
 app.use('/api/grocery',cors(), groceryRoutes);
 app.use('/api/feedback',cors(), feedbackRoutes);
+app.use('/api/progresslog',cors(), progressLogRoutes);
+app.use('/api/nutritioncontent',cors(), nutritionContentRoutes);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, '0.0.0.0',() => console.log(`Server is running on port ${PORT}...`));
