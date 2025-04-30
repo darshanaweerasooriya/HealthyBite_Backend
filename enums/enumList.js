@@ -13,4 +13,17 @@ const MealType = Object.freeze({
     FiveStar: 5,
   });
 
-  module.exports = {MealType, rating};
+  const professionalType = Object.freeze({
+    Dietitian: 1,
+    FitnessCoach: 2,
+  
+  });
+
+  const appointmentStatus = Object.freeze({
+    Pending: 1,
+    Confirmed: 2,
+    Cancelled: 3,
+    
+  });
+
+  module.exports = {MealType,rating,professionalType,appointmentStatus};
