@@ -50,4 +50,28 @@ const cancelAppointment = asyncHandler(async (req, res) => {
     res.status(200).json({ message: "Appointment cancelled" });
 });
 
-module.exports = { bookAppointment, getUserAppointments, cancelAppointment };
+
+const approveAppointment = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const appointment = await Appointment.findById(id);
+
+    if(!appointment){
+        return res.status(404).json({message:"Appointment not found"});
+    }
+
+    appointment.status = appointmentStatus.Confirmed;
+    await appointment.save();
+    res.status(200).json({message:"Appointment approved",appointment});
+});
+
+const getCoachAppoinments = asyncHandler(async(req,res) =>{
+    const professionalId = req.user.id;
+
+    const appointment = await Appointment.find({professionalId})
+        .populate('userId', 'username email')
+        .sort({date: -1});
+    
+    res.status(200).json({appointment});
+})
+
+module.exports = { bookAppointment, getUserAppointments, cancelAppointment,approveAppointment,getCoachAppoinments };
