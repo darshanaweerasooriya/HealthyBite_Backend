@@ -26,4 +26,14 @@ const MealType = Object.freeze({
     
   });
 
-  module.exports = {MealType,rating,professionalType,appointmentStatus};
+  const genderList = Object.freeze({
+    Male:'Male',
+    Female:'Female'
+  });
+
+  const targetList = Object.freeze({
+    BodyBuilding:'Body building',
+    WeightLoss:'Weight loss'
+  })
+
+  module.exports = {MealType,rating,professionalType,appointmentStatus,genderList,targetList};

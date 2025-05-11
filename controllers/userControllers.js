@@ -20,9 +20,9 @@ const serverBaseUrl = 'http://localhost:3001';
 //User registration
 const register = asyncHandler(async (req, res) => {
     try {
-        const { fullName, username, email, password, mobile, dateOfBirth, age, gender, weight, height,goals, profileImage,dietaryPreferences } = req.body;
+        const { username, email, password } = req.body;
 
-        if (!fullName || !username || !email || !password || !mobile || !dateOfBirth || !age || !weight|| !height) {
+        if ( !username || !password) {
             return res.status(400).json({ message: "Please fill all required fields." });
         }
 
@@ -46,33 +46,23 @@ const register = asyncHandler(async (req, res) => {
             profileImageUrl = `${serverBaseUrl}/uploads/${fileName}`;
         }
 
-        let parsedGoals = [];
+        // let parsedGoals = [];
 
-        if (typeof goals === 'string') {
-            try {
-                parsedGoals = JSON.parse(goals); // parse from string to array of objects
-            } catch (err) {
-                return res.status(400).json({ message: "Invalid goals format. Should be a JSON array of objects." });
-            }
-        } else {
-            parsedGoals = goals;
-        }
+        // if (typeof goals === 'string') {
+        //     try {
+        //         parsedGoals = JSON.parse(goals); // parse from string to array of objects
+        //     } catch (err) {
+        //         return res.status(400).json({ message: "Invalid goals format. Should be a JSON array of objects." });
+        //     }
+        // } else {
+        //     parsedGoals = goals;
+        // }
 
         const user = new User({
-            fullName,
             username,
             email,
             password: hashPassword,
-            mobile,
-            dateOfBirth,
-            age,
-            profileImage: profileImageUrl,
-            gender,
-            weight,
-            height,
-            goals: parsedGoals,
-            dietaryPreferences
-          
+              
         });
 
         await user.save();

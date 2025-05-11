@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const http = require('http');
 const connectDB = require('./config/db');
 require('dotenv').config();
 const userRoutes = require('./routes/userRoutes');
@@ -14,7 +15,13 @@ const nutritionContentRoutes = require('./routes/nutritioncontentRoutes');
 const postRoutes = require('./routes/postRoutes');
 const appointmentRoutes = require('./routes/appoinmentRoutes');
 const professionalRoutes = require('./routes/professionalRoutes');
+const fitnessAssessRoutes = require('./routes/fitnessAssessRoutes');
+const messageRoutes = require('./routes/messageRoutes');
 const app = express();
+const initSocket = require('./sockets');
+
+const server = http.createServer(app); 
+initSocket(server);
 
 connectDB();
 app.use(cors());
@@ -33,6 +40,8 @@ app.use('/api/nutritioncontent',cors(), nutritionContentRoutes);
 app.use('/api/posts',cors(), postRoutes);
 app.use('/api/appointment',cors(), appointmentRoutes);
 app.use('/api/professional',cors(), professionalRoutes);
+app.use('/api/fitnessassess',cors(), fitnessAssessRoutes);
+app.use('/api/message',cors(), messageRoutes);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, '0.0.0.0',() => console.log(`Server is running on port ${PORT}...`));
