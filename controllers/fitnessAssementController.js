@@ -3,33 +3,32 @@ const FitnessAssetment = require('../models/FitnessAssementSchema');
 const { json } = require('express');
 
 const createAssessment = asyncHandler(async (req, res) => {
-    const userId = req.user.id;
-    const {age, height, weight, gender, target, dailyStatus, targetDate, followingDiet} = req.body;
+  const userId = req.user.id;
+  const { age, height, weight, gender, target, dailyStatus, targetDate } = req.body;
 
-    const dailyCalories = gender === 'Male'
+  const dailyCalories = gender === 'Male'
     ? 10 * weight + 6.25 * height - 5 * age + 5
     : 10 * weight + 6.25 * height - 5 * age - 161;
 
-    const protein = weight * 1.6;
-    const water = weight * 35 / 1000;
+  const protein = weight * 1.6;
+  const water = weight * 35 / 1000;
 
-    const result = {dailyCalories, protein, water};
+  const result = { dailyCalories, protein, water };
 
-    const assetment = new FitnessAssetment({
-        userId,
-        age,
-        height,
-        weight,
-        gender,
-        target,
-        dailyStatus,
-        targetDate,
-        followingDiet,
-        result
-    });
+  const assessment = new FitnessAssetment({
+    userId,
+    age,
+    height,
+    weight,
+    gender,
+    target,
+    dailyStatus,
+    targetDate,
+    result
+  });
 
-    await assetment.save();
-    res.status(201).json({message:'Assetment saved', result});
+  await assessment.save();
+  res.status(201).json({ message: 'Assessment saved', result });
 });
 
 const getLatestAssetment = asyncHandler(async (req, res) => {

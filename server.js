@@ -3,6 +3,7 @@ const cors = require('cors');
 const http = require('http');
 const connectDB = require('./config/db');
 require('dotenv').config();
+
 const userRoutes = require('./routes/userRoutes');
 const mealPlanRoutes = require('./routes/mealPlanRoutes');
 const recipeRoutes = require('./routes/recipeRoutes');
@@ -17,33 +18,39 @@ const appointmentRoutes = require('./routes/appoinmentRoutes');
 const professionalRoutes = require('./routes/professionalRoutes');
 const fitnessAssessRoutes = require('./routes/fitnessAssessRoutes');
 const messageRoutes = require('./routes/messageRoutes');
+
 const app = express();
+const server = http.createServer(app); // Use server for Socket.io
 const initSocket = require('./sockets');
+initSocket(server); // Initialize Socket.io with server
 
-const server = http.createServer(app); 
-initSocket(server);
+connectDB(); // Connect to MongoDB
 
-connectDB();
+// Middlewares
 app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
-app.use('/api/users',cors(), userRoutes);
-app.use('/api/mealplan',cors(), mealPlanRoutes);
-app.use('/api/recipes',cors(), recipeRoutes);
-app.use('/api/nutritiontracking',cors(), nutritionTrackingRoutes);
-app.use('/api/meal',cors(), mealRoutes);
-app.use('/api/grocery',cors(), groceryRoutes);
-app.use('/api/feedback',cors(), feedbackRoutes);
-app.use('/api/progresslog',cors(), progressLogRoutes);
-app.use('/api/nutritioncontent',cors(), nutritionContentRoutes);
-app.use('/api/posts',cors(), postRoutes);
-app.use('/api/appointment',cors(), appointmentRoutes);
-app.use('/api/professional',cors(), professionalRoutes);
-app.use('/api/fitnessassess',cors(), fitnessAssessRoutes);
-app.use('/api/message',cors(), messageRoutes);
+// Routes
+app.use('/api/users', cors(), userRoutes);
+app.use('/', cors(), mealPlanRoutes);
+app.use('/api/recipes', cors(), recipeRoutes);
+app.use('/api/nutritiontracking', cors(), nutritionTrackingRoutes);
+app.use('/api/meal', cors(), mealRoutes);
+app.use('/api/grocery', cors(), groceryRoutes);
+app.use('/api/feedback', cors(), feedbackRoutes);
+app.use('/api/progresslog', cors(), progressLogRoutes);
+app.use('/api/nutritioncontent', cors(), nutritionContentRoutes);
+app.use('/api/posts', cors(), postRoutes);
+app.use('/api/appointment', cors(), appointmentRoutes);
+app.use('/api/professional', cors(), professionalRoutes);
+app.use('/api/fitnessassess', cors(), fitnessAssessRoutes);
+app.use('/api/message', cors(), messageRoutes);
 
+// Port config
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, '0.0.0.0',() => console.log(`Server is running on port ${PORT}...`));
 
-
+// ✅ Start server on 0.0.0.0 so it's accessible on LAN
+server.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
