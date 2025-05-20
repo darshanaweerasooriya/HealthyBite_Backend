@@ -173,11 +173,28 @@ const registerProfessional = asyncHandler(async (req, res) => {
     }
 });
 
+// controllers/professionalController.js
+
+const getAllCoaches = asyncHandler(async (req, res) => {
+  try {
+    const coaches = await Professional.find({ type: 1 }).select("name profileImage");
+    res.status(200).json(coaches);
+  } catch (error) {
+    console.error("Error fetching coaches:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+
+
+
 
 
 module.exports = {
     createProfessionalAccount,
     professionalLogin,
+    getAllCoaches,
     getAvailableSlots,
-    registerProfessional
+    registerProfessional,
+  
 };
